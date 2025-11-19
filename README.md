@@ -61,3 +61,37 @@ A local web chat application powered by a Python FastAPI backend and the Gemini 
 - `main.py`: The FastAPI application entry point. Handles chat endpoints and invokes the Gemini CLI.
 - `static/`: Contains the frontend assets (`index.html`, `style.css`, `script.js`).
 - `pyproject.toml`: Project configuration and dependencies.
+
+## Troubleshooting
+
+### Address already in use
+
+If you see an error like `[Errno 98] error while attempting to bind on address ('127.0.0.1', 8000): address already in use`, it means another process is already using port 8000.
+
+**Solution:**
+
+1.  **Find the process using port 8000:**
+    ```bash
+    lsof -i :8000
+    ```
+    Or using `netstat`:
+    ```bash
+    netstat -nlp | grep :8000
+    ```
+
+2.  **Kill the process:**
+    Take the PID (Process ID) from the output above and run:
+    ```bash
+    kill <PID>
+    ```
+    (Replace `<PID>` with the actual number, e.g., `kill 12345`)
+
+    If the process refuses to close, use `-9` to force kill it:
+    ```bash
+    kill -9 <PID>
+    ```
+
+3.  **Retry starting the server:**
+    ```bash
+    uv run main.py
+    ```
